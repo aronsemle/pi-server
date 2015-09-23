@@ -3,7 +3,7 @@
         {
             "pin": 4,
             "name": "temp",
-            "type": "w1",
+            "type": "w1"
         }
     ],
     "outputs": []
