@@ -23,10 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.digitalpetri.opcua.raspberrypi.GpioConfig.InputConfig;
 import com.digitalpetri.opcua.raspberrypi.GpioConfig.OutputConfig;
-import com.digitalpetri.opcua.raspberrypi.nodes.AnalogInputNode;
-import com.digitalpetri.opcua.raspberrypi.nodes.AnalogOutputNode;
-import com.digitalpetri.opcua.raspberrypi.nodes.DigitalInputNode;
-import com.digitalpetri.opcua.raspberrypi.nodes.DigitalOutputNode;
+import com.digitalpetri.opcua.raspberrypi.nodes.*;
 import com.digitalpetri.opcua.sdk.core.Reference;
 import com.digitalpetri.opcua.sdk.server.NamespaceManager;
 import com.digitalpetri.opcua.sdk.server.api.DataItem;
@@ -146,8 +143,10 @@ public class PiNamespace implements UaNamespace {
                 node = DigitalInputNode.fromInput(this, input);
             } else if ("analog".equalsIgnoreCase(inputType)) {
                 node = AnalogInputNode.fromInput(this, input);
+            } else if ("w1".equalsIgnoreCase(inputType)) {
+                node = DS18B20Node.fromInput(this, input);
             } else {
-                logger.warn("Unknown input type: {}. Expected \"digital\" or \"analog\".", inputType);
+                logger.warn("Unknown input type: {}. Expected \"digital\" or \"analog\" or \"w1\".", inputType);
                 node = null;
             }
 
