@@ -80,27 +80,30 @@ public class DS18B20Node extends UaVariableNode {
 
         public void run ()
         {
+            logger.info("Starting DS18B20 thread on path '{}'", dataFilePath);
             while(true){
                 try {
                     List<String> strLines = Files.readAllLines(dataFilePath);
-                    if(strLines.size() == 2)
-                    {
+                    if(strLines.size() == 2){
                         // Find the t= text and pull the number
                         String strData = strLines.get(1);
                         int nIndex = strData.indexOf("t=");
-                        if(nIndex != -1)
-                        {
+                        if(nIndex != -1){
                             int value = Integer.parseInt(strData.substring(nIndex+2));
                             node.setValue(new DataValue(new Variant(value/1000.0)));
+                        }else{
+                            logger.error("Can't find temperature reading for DS18B20, data '{}'", strData);
                         }
+                    } else {
+                        logger.error("Invalid file format for DS18B20, file: '{}'", strLines);
                     }
 
                     // Slow down...
                     Thread.sleep(1000);
                 }
                 catch (InterruptedException e){
-                 // Stop the thread
-                 break;
+                    // Stop the thread
+                    break;
                 }
                 catch(Exception e){
                     logger.error("Exception when reading temperature file '{}', error is '{}'", dataFilePath, e.getMessage());

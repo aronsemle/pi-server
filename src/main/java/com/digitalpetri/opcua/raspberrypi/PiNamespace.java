@@ -139,6 +139,7 @@ public class PiNamespace implements UaNamespace {
 
             UaVariableNode node;
 
+            logger.info("Creating input '{}', type '{}', pin '{}'", input.getName(), input.getType(), input.getPin());
             if ("digital".equalsIgnoreCase(inputType)) {
                 node = DigitalInputNode.fromInput(this, input);
             } else if ("analog".equalsIgnoreCase(inputType)) {
